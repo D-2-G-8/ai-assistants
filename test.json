@@ -1,0 +1,155 @@
+{
+    "issues": [
+        {
+            "id": "ISSUE-001",
+            "severity": "blocker",
+            "category": "missing",
+            "quote": "Column 3:",
+            "message": "The process description for the functional requirement 'Мерчант получает информацию о заказе по номеру заказа.' is missing.",
+            "fix_suggestion": "Provide a detailed process description for this functional requirement.",
+            "startHint": "Look in the 'Требования' section under ФТ2.",
+            "endHint": "Ensure all functional requirements have corresponding process descriptions."
+        },
+        {
+            "id": "ISSUE-002",
+            "severity": "warning",
+            "category": "ambiguity",
+            "quote": "Метод только для заказов доставляемых лог партнером.",
+            "message": "The term 'лог партнером' is not defined in the document.",
+            "fix_suggestion": "Add a definition for 'лог партнером' in the glossary or context section.",
+            "startHint": "Check the 'Контекст' section for glossary definitions.",
+            "endHint": "Clarify any terms that may not be understood by all stakeholders."
+        },
+        {
+            "id": "ISSUE-003",
+            "severity": "warning",
+            "category": "testability",
+            "quote": "Ошибки со статусом _400_ транслируем мерчантам.",
+            "message": "There is no clear specification on how to handle errors with status codes 409 and 412.",
+            "fix_suggestion": "Provide detailed error handling procedures for status codes 409 and 412.",
+            "startHint": "Refer to the 'Обработка ошибок' section.",
+            "endHint": "Ensure all error statuses are documented with handling procedures."
+        },
+        {
+            "id": "ISSUE-004",
+            "severity": "blocker",
+            "category": "missing",
+            "quote": "Column 3:",
+            "message": "The process description for the functional requirement 'Мерчант передает информацию о комплектации.' is missing.",
+            "fix_suggestion": "Provide a detailed process description for this functional requirement.",
+            "startHint": "Look in the 'Требования' section under ФТ3.",
+            "endHint": "Ensure all functional requirements have corresponding process descriptions."
+        },
+        {
+            "id": "ISSUE-005",
+            "severity": "warning",
+            "category": "consistency",
+            "quote": "дата создания до; Column 2: Нет;",
+            "message": "The 'Дата создания до' field is listed as not mandatory but lacks a clear explanation.",
+            "fix_suggestion": "Clarify the implications of this field being non-mandatory.",
+            "startHint": "Check the 'Обеспечить Сортировку и фильтрацию' section.",
+            "endHint": "Ensure all fields have clear descriptions of their requirements."
+        },
+        {
+            "id": "ISSUE-006",
+            "severity": "warning",
+            "category": "testability",
+            "quote": "Формат ошибок:",
+            "message": "The error format is specified, but there is no example of how to handle these errors in the API responses.",
+            "fix_suggestion": "Include examples of API responses that demonstrate error handling.",
+            "startHint": "Refer to the 'Обработка ошибок' section.",
+            "endHint": "Provide examples to improve clarity on error handling."
+        },
+        {
+            "id": "ISSUE-007",
+            "severity": "blocker",
+            "category": "missing",
+            "quote": "Column 3:",
+            "message": "The process description for the functional requirement 'Мерчант передает информацию о передаче заказа покупателю.' is missing.",
+            "fix_suggestion": "Provide a detailed process description for this functional requirement.",
+            "startHint": "Look in the 'Требования' section under ФТ6.",
+            "endHint": "Ensure all functional requirements have corresponding process descriptions."
+        },
+        {
+            "id": "ISSUE-008",
+            "severity": "warning",
+            "category": "scope",
+            "quote": "TODO код 1с тоже нужно подмешивать",
+            "message": "The document contains a TODO item indicating incomplete information regarding the integration with 1C.",
+            "fix_suggestion": "Complete the section regarding the integration with 1C.",
+            "startHint": "Check the 'Техисследование' section.",
+            "endHint": "Ensure all TODO items are addressed before finalizing the document."
+        }
+    ],
+    "questions": [
+        {
+            "id": "Q-001",
+            "severity": "blocker",
+            "question": "What are the specific error messages for status codes 409 and 412?",
+            "reason": "Understanding the specific error messages is crucial for proper error handling in the API."
+        },
+        {
+            "id": "Q-002",
+            "severity": "warning",
+            "question": "Can you clarify the term 'лог партнером'?",
+            "reason": "Clarification is needed to ensure all stakeholders understand the term."
+        },
+        {
+            "id": "Q-003",
+            "severity": "warning",
+            "question": "What is the expected behavior if the 'Дата создания до' field is not provided?",
+            "reason": "Understanding the implications of non-mandatory fields is essential for implementation."
+        },
+        {
+            "id": "Q-004",
+            "severity": "warning",
+            "question": "Is there a specific format required for the 'Причина отмены' field?",
+            "reason": "Knowing the format will help in validating the input data."
+        },
+        {
+            "id": "Q-005",
+            "severity": "warning",
+            "question": "What are the business rules for the list of cancellation reasons?",
+            "reason": "Understanding the business rules will help in implementing the cancellation feature correctly."
+        },
+        {
+            "id": "Q-006",
+            "severity": "warning",
+            "question": "Will there be any validation rules for the 'comment' field in the cancellation request?",
+            "reason": "Clarifying validation rules is important for ensuring data integrity."
+        },
+        {
+            "id": "Q-007",
+            "severity": "warning",
+            "question": "How will the integration with 1C be handled?",
+            "reason": "Understanding the integration process is crucial for ensuring compatibility."
+        },
+        {
+            "id": "Q-008",
+            "severity": "warning",
+            "question": "What specific data needs to be included in the request for the 'Комплектация заказа' method?",
+            "reason": "Clarifying the required data will help in implementing the method correctly."
+        }
+    ],
+    "prep": {
+        "cleanedText": "## **Контекст**\n\nДанные требования описывают функциональность публичного API, предназначенного для сторонних систем (например, ERP, учетных систем продавца) для автоматизации управления заказом.\n\n**Требования**\n\nColumn 1: Бизнес требование; Column 2: Функциональное требование; Column 3: Процесс с API\n\nColumn 1: Удаленная работа мерчанта в Мерчант портале; Column 2: ФТ1: Seller API позволяет получать список заказов .; Column 3: Мерчант получает список своих заказов.\n\nColumn 1: ФТ2: Seller API позволяет получать данные заказа в разных статусах.; Column 2: Мерчант получает информацию о заказе по номеру заказа.; Column 3:\n\nColumn 1: ФТ3: Seller API позволяет скомплектовать заказ; Column 2: Мерчант передает информацию о комплектации. В процессе комплектации мерчант:\u001fесли это курьерская доставка- распределяет товары по тарным местам.\u001fесли это самовывоз - только информирует о сборе.; Column 3:\n\nColumn 1: ФТ5: Seller API позволяет сменить статус заказа на выдан курьеру.; Column 2: Мерчант передает информацию о передаче заказа курьеру\u001f\u001fМетод только для заказов доставляемых лог партнером.; Column 3:\n\nColumn 1: ФТ6: Seller API позволяет сменить статус заказа на выдан покупателю .; Column 2: Мерчант передает информацию о передаче заказа покупателю\u001f\u001fМетод только для заказов на самовывоз.; Column 3:\n\nColumn 1: ФТ6: Seller API позволяет сменить статус заказа на отменен.; Column 2: Мерчант передает информацию об отмене заказа\u001f\u001f\\*\\*Отмена доступна только до комплектации!\\*\\*\u001f Список причин отмены будет установлен бизнесом.; Column 3:\n\n### **Метод \" Получить список заказов\"**\n\n**Описание функционала**\n\nColumn 1: №; Column 2: Процесс; Column 3: Описание процесса; Column 4: Требования\n\nColumn 1: 1; Column 2: Получение списка заказов; Column 3: 1. Авторизованный мерчант выполняет запрос. 2. MP выполняет запрос в ОМС для получения списка заказов мерчанта. 3. MP выполняет запрос в STL для получения данных складов из заказов. 4. MP формирует и отдает ответ мерчанту. 1. Список заказов 2. Уведомление \"Заказов нет\" 3. Ошибка при выполнении запроса; Column 4: 1. Постраничный вывод - единовременно передается фиксированное кол-во заказов. 2. Не получаем заказы в статусе New. Заказы в остальных статусах должны отображаться в списке. 3. Сортируем заказы по дате от новых к старым. 4. Если заказов нет - возвращаем ответ с уведомлением.\n\n**Для получения данных используем следующие свагеры**\n\nColumn 1: Система; Column 2: Свагер; Column 3: Метод\n\nColumn 1: ОМС; Column 2: https\\://oms-master-search-service.k8s-stage.ladadigit.io/swagger-ui; Column 3: Получение списка заказов:\u001f\u001f/v1/aggregated-supplies\n\nColumn 1: STL; Column 2: https\\://stl-master-location-repo.k8s-stage.ladadigit.io/swagger-ui/index.html#/; Column 3: Получение данных складов:\u001f /api/stl/location-repo/v1/warehouses/serch\n\n**Ошибки**\n\nColumn 1: Описание; Column 2: Вх. ошибка; Column 3: Исх. ошибка\n\nColumn 1: ОМС не отвечает; Column 2: 500; Column 3: 503 - Сервис временно не доступен\n\nColumn 1: STL не отвечает; Column 2: 500; Column 3: 503 - Сервис временно не доступен\n\n**Обеспечить Сортировку и фильтрацию**\n\nColumn 1: Описание; Column 2: Обязательность; Column 3: Название поля в источнике данных; Column 4: Варианты значений в источнике данных; Column 5: По умолчанию; Column 6: Название поля в контракте Seller; Column 7: Значение в контракте Seller\n\nColumn 1: Фильтрация; Column 2:; Column 3:; Column 4:; Column 5:; Column 6:; Column 7:\n\nColumn 1: Кол-во заказов на странице; Column 2: Да; Column 3:; Column 4: -; Column 5: 10; Column 6:; Column 7:\n\nColumn 1: Страница; Column 2: Да; Column 3:; Column 4: -; Column 5: 1; Column 6:; Column 7:\n\nColumn 1: Тип доставки; Column 2: Нет; Column 3: content\\[].supply.receiveMethod; Column 4: \\[courier, pickup, pvz]; Column 5: Не задан; Column 6:; Column 7:\n\nColumn 1: Статус; Column 2: Нет; Column 3: content\\[].supply.status; Column 4: \\[new, confirmed, ready_for_giveaway, ready_for_shipment, given_away, in_delivery, completed, cancelled]; Column 5: \\[confirmed, ready_for_giveaway, ready_for_shipment, given_away, in_delivery, completed, cancelled]; Column 6:; Column 7:\n\nColumn 1: Дата создания; Column 2: Нет; Column 3:; Column 4: -; Column 5: Не задан; Column 6:; Column 7:\n\nColumn 1: Дата создания до; Column 2: Нет; Column 3:; Column 4: -; Column 5: Не задан; Column 6:; Column 7:\n\nColumn 1: Сортировка; Column 2:; Column 3:; Column 4:; Column 5:; Column 6:; Column 7:\n\nColumn 1: От новых к старым и от старых к новым; Column 2: Нет; Column 3:; Column 4: -; Column 5: От новых к старым; Column 6:; Column 7:\n\nColumn 1: По убыванию или по возрастанию номера заказа; Column 2: Нет; Column 3:; Column 4: -; Column 5: Не задана; Column 6:; Column 7:\n\n**Сопоставление полей**\n\nColumn 1: Данные; Column 2: Обязательность; Column 3: Вх. данные; Column 4: Исх. данные; Column 5:; Column 6:; Column 7:\n\nColumn 1: Название поля В источнике данных; Column 2: Тип данных В источнике данных; Column 3: Система Источник данных; Column 4: Название поля Seller 2.0; Column 5: Тип данных Seller 2.0; Column 6:; Column 7:\n\nColumn 1: Уникальный номер заказа для мерчанта. На текущий момент называется Поставка.; Column 2: Да; Column 3: content\\[]. supply.id; Column 4: int; Column 5: OMS; Column 6: id; Column 7: int\n\nColumn 1: id склада склада с которого будет отгружен или выдан товар; Column 2: Да; Column 3: content\\[].supply.warehouseId; Column 4: string; Column 5: OMS; Column 6: warehouse.id; Column 7: string\n\nColumn 1: Адрес склада; Column 2: Да; Column 3: data\\[].address; Column 4: string; Column 5: STL; Column 6: warehouse.address; Column 7: string\n\nColumn 1: Публичное название ПВЗ/Склада с которого будет отгружен или выдан товар; Column 2: Да; Column 3: data\\[].storeName; Column 4: string; Column 5: STL; Column 6: warehouse.name; Column 7: string\n\nColumn 1: Способ обработки и передачи товара покупателю.\u001f Например : pickup, PVZ, courier.\u001f\u001fНа UI выполняется маппинг выбранного пользователем способа доставки pickup: Самовывоз, courier/PVZ:Курьерская доставка.\u001f\u001f По API это НЕ ТРЕБУЕТСЯ!; Column 2: Да; Column 3: content\\[].supply.receiveMethod; Column 4: string enum { PICKUP, COURIER, PVZ}; Column 5: OMS; Column 6: delivery.type; Column 7: string enum { PICKUP, COURIER, PVZ}\n\nColumn 1: Текущий статус поставки\u001f\u001fВозможные варианты\u001f См. статусную модель; Column 2: Да; Column 3: content\\[].supply.status; Column 4: string\u001f\u001fenum {\u001fCONFIRMED,\u001f READY_4_SHIPMENT ,\u001f GIVEN_AWAY ,\u001f IN_DELIVERY ,\u001f READY_4_GIVEAWAY ,\u001fCOMPLETED,\u001fCANCELED}; Column 5: OMS; Column 6: delivery.status; Column 7: string\u001f\u001fenum {\u001fCONFIRMED,\u001f READY_4_SHIPMENT ,\u001f GIVEN_AWAY ,\u001f IN_DELIVERY ,\u001f READY_4_GIVEAWAY ,\u001fCOMPLETED,\u001fCANCELED}\n\nColumn 1: Дата создания клиентом заказа на витринe; Column 2: Да; Column 3: content\\[].order.metadata.createdAt; Column 4: datetime; Column 5: OMS; Column 6: createdAt; Column 7: datetime\n\nColumn 1: Дата в которую заказ должен быть выдан покупателю; Column 2: Да; Column 3: content\\[].delivery.plannedDeliveryDate; Column 4: datetime; Column 5: OMS; Column 6: plannedDeliveryDate; Column 7: datetime\n\n### **Метод \"Получение заказа по id\"**\n\n**Описание функционала**\n\nColumn 1: №; Column 2: Процесс; Column 3: Описание процесса; Column 4: Требования\n\nColumn 1: 1; Column 2: Получение заказа по id; Column 3: 1. Авторизованный мерчант выполняет запрос данных заказа по номеру. 2. MP выполняет запрос в ОМС для получения данных заказа. 3. MP выполняет запрос в STL для получения данных склада из заказа. 4. MP формирует и отдает ответ мерчанту. 1. Данные заказа 2. Уведомление \"Заказ не найден\" 3. Ошибка при выполнении запроса; Column 4: 1. Данный метод предоставляет только возможность чтения информации 2. Заказ может быть в любом статусе 3. Некоторые поля уникальны для типа доставки или статуса (см. в таблице ниже)\n\n**Для получения данных используем следующие свагеры**\n\nColumn 1: Система; Column 2: Свагер; Column 3: Метод\n\nColumn 1: ОМС; Column 2: https\\://oms-master-search-service.k8s-stage.ladadigit.io/swagger-ui; Column 3: Получение списка заказов:\u001f\u001f/v1/aggregated-supplies\n\nColumn 1: STL; Column 2: https\\://stl-master-location-repo.k8s-stage.ladadigit.io/swagger-ui/index.html#/; Column 3: Получение данных складов:\u001f /api/stl/location-repo/v1/warehouses/serch\n\nColumn 1: PIM; Column 2: https\\://pim-master-product-repo.k8s-stage.ladadigit.io/swagger-ui/index.html?urls.primaryName=main; Column 3: Получение данных товара:\u001f /api/pim/product-repo/v2/products/search\n\n**Сопоставление полей**\n\nColumn 1: Данные; Column 2: Обязательность; Column 3: Вх. данные; Column 4: Исх. данные; Column 5:; Column 6:; Column 7:\n\nColumn 1: Название поля В источнике данных; Column 2: Тип данных В источнике данных; Column 3: Система Источник данных; Column 4: Название поля Seller 2.0; Column 5: Тип данных Seller 2.0; Column 6:; Column 7:\n\nColumn 1: Уникальный номер заказа для мерчанта. На текущий момент называется Поставка.; Column 2: Да; Column 3: content\\[]. supply.id; Column 4: int; Column 5: OMS; Column 6: id; Column 7: int\n\nColumn 1: id склада склада с которого будет отгружен или выдан товар; Column 2: Да; Column 3: content\\[].supply.warehouseId; Column 4: string; Column 5: OMS; Column 6: warehouse.id; Column 7: string\n\nColumn 1: Адрес склада; Column 2: Да; Column 3: data\\[].address; Column 4: string; Column 5: STL; Column 6: warehouse.address; Column 7: string\n\nColumn 1: Публичное название ПВЗ/Склада с которого будет отгружен или выдан товар; Column 2: Да; Column 3: data\\[].storeName; Column 4: string; Column 5: STL; Column 6: warehouse.name; Column 7: string\n\nColumn 1: Способ обработки и передачи товара покупателю.\u001f Например : pickup, PVZ, courier.\u001f\u001fНа UI выполняется маппинг выбранного пользователем способа доставки pickup: Самовывоз, courier/PVZ:Курьерская доставка.\u001f\u001f По API это НЕ ТРЕБУЕТСЯ!; Column 2: Да; Column 3: content\\[].supply.receiveMethod; Column 4: string enum { PICKUP, COURIER, PVZ}; Column 5: OMS; Column 6: delivery.type; Column 7: string enum { PICKUP, COURIER, PVZ}\n\nColumn 1: Текущий статус поставки\u001f\u001fВозможные варианты\u001f См. статусную модель; Column 2: Да; Column 3: content\\[].supply.status; Column 4: string\u001f\u001fenum {\u001fCONFIRMED,\u001f READY_4_SHIPMENT ,\u001f GIVEN_AWAY ,\u001f IN_DELIVERY ,\u001f READY_4_GIVEAWAY ,\u001fCOMPLETED,\u001fCANCELED}; Column 5: OMS; Column 6: delivery.status; Column 7: string\u001f\u001fenum {\u001fCONFIRMED,\u001f READY_4_SHIPMENT ,\u001f GIVEN_AWAY ,\u001f IN_DELIVERY ,\u001f READY_4_GIVEAWAY ,\u001fCOMPLETED,\u001fCANCELED}\n\nColumn 1: Дата создания клиентом заказа на витринe; Column 2: Да; Column 3: content\\[].order.metadata.createdAt; Column 4: datetime; Column 5: OMS; Column 6: createdAt; Column 7: datetime\n\nColumn 1: Дата в которую заказ должен быть выдан покупателю; Column 2: Да; Column 3: content\\[].delivery.plannedDeliveryDate; Column 4: datetime; Column 5: OMS; Column 6: plannedDeliveryDate; Column 7: datetime\n\nColumn 1: Фактическая дата выдачи\\передачи товара покупателю; Column 2: Да, если заказ COMPLETED; Column 3: content\\[].delivery.deliveryDate; Column 4: datetime; Column 5: OMS; Column 6: deliveryDate; Column 7: datetime\n\nColumn 1: Дата отмены заказа; Column 2: Да, если заказ CANCELED; Column 3: content\\[].supply.statusHistory\\[].timestamp; Column 4: datetime; Column 5: OMS; Column 6: canceledAt; Column 7: datetime\n\nColumn 1: Причина отмены указанная при отмене товара; Column 2: Да, если заказ CANCELED; Column 3: content\\[].supply.statusHistory\\[].reason; Column 4: string; Column 5: OMS; Column 6: canceledReason; Column 7: string\n\nColumn 1: Название транспортной компании (лог.партнер); Column 2: Да, если тип доставки COURIER или PVZ; Column 3: content\\[].delivery.operator; Column 4: string\u001f\u001fKSE\u001f RUS_POST; Column 5: OMS; Column 6: delivery.operator; Column 7: string\n\nColumn 1: Номер тарного места; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].number; Column 4: string; Column 5: OMS; Column 6: delivery.containers\\[].number; Column 7: string\n\nColumn 1: Вес тарного места; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].weight; Column 4: number; Column 5: OMS; Column 6: delivery.containers\\[].weight; Column 7: number\n\nColumn 1: Длина тарного места; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].length; Column 4: number; Column 5: OMS; Column 6: delivery.containers\\[].length; Column 7: number\n\nColumn 1: Ширина тарного места; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].width; Column 4: number; Column 5: OMS; Column 6: delivery.containers\\[].width; Column 7: number\n\nColumn 1: Высота тарного места; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].height; Column 4: number; Column 5: OMS; Column 6: delivery.containers\\[].height; Column 7: number\n\nColumn 1: Id продукта в данном тарном месте; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].items\\[].id; Column 4: string; Column 5: OMS; Column 6: delivery.containers\\[].items\\[].id; Column 7: string\n\nColumn 1: Кол-во товаров с Id продукта в данном тарном месте; Column 2: Да, если тип доставки COURIER или PVZ и статус кроме CONFIRMED и CANCELED; Column 3: content\\[].delivery.containers\\[].items\\[].quantity; Column 4: int; Column 5: OMS; Column 6: delivery.containers\\[].items\\[].quantity; Column 7: int\n\nColumn 1: Название товара; Column 2: Да; Column 3: content\\[].supply.items\\[].name; Column 4: string; Column 5: OMS; Column 6: items\\[].name; Column 7: string\n\nColumn 1: Артикул; Column 2: Да; Column 3: content\\[].supply.items\\[].article; Column 4: string; Column 5: OMS; Column 6: items\\[].article; Column 7: string\n\nColumn 1: Бренд; Column 2: Да; Column 3: brand; Column 4: string; Column 5: PIM; Column 6: items\\[].brand; Column 7: string\n\nColumn 1: Код товара мерчанта; Column 2: Нет; Column 3: code; Column 4: string; Column 5: MP (реализация хранения в загрузке стока); Column 6: items\\[].code; Column 7: string\n\nColumn 1: PIM код; Column 2: Да; Column 3: content\\[].supply.items\\[].id; Column 4: string; Column 5: OMS; Column 6: items\\[].id; Column 7: string\n\nColumn 1: Количество товара; Column 2: Да; Column 3: content\\[].supply.items\\[].quantity; Column 4: int; Column 5: OMS; Column 6: items\\[].quantity; Column 7: int\n\nColumn 1: Цена без учета скидки; Column 2: Да; Column 3: content\\[].supply.items\\[].price; Column 4: int; Column 5: OMS; Column 6: items\\[].price; Column 7: int\n\nColumn 1: Цена со скидкой; Column 2: Да, если есть скидка; Column 3: content\\[].payment.items\\[].discountPrice; Column 4: int; Column 5: OMS; Column 6: items\\[].discountPrice; Column 7: int\n\n### **Метод \"Комплектация заказа\"**\n\nColumn 1: Название и описание поля; Column 2: Требования к заполнению поля; Column 3:; Column 4:\n\nColumn 1: Общее описание поля; Column 2: Название поля; Column 3: Обязательность; Column 4: Валидация\n\nColumn 1: Если тип доставки Курьр/ПВЗ; Column 2:; Column 3:; Column 4:\n\nColumn 1: Уникальный номер заказа для мерчанта. На текущий момент называется Поставка; Column 2: Заказ; Column 3: да; Column 4:\n\nColumn 1: Порядковый номер тарного места в котором будет доставляться товар; Column 2: Номер грузоместа; Column 3: да; Column 4: Порядковый номер\n\nColumn 1: Весогабаритные характеристики тарного места - коробки в которую были упакованы товары.\u001f Вес длина и ширина высота отдельные поля Единицы измерения метр/кг; Column 2: ВГХ ГМ; Column 3: да; Column 4: Вес не больше 999,99 кг Длина, высота, ширина\u001f каждая не более 5м\u001fМаксимум 2 знака после запятой.\n\nColumn 1: Идентификатор товара упакованного в тарное место. PIM ID (Тут не уверена, надо смотреть по контракту ОМС.); Column 2: Идентификатор товара; Column 3: да; Column 4:\n\nColumn 1: Если тип доставки Самовывоз Если самовывоз- то комплектуются все товары.; Column 2:; Column 3:; Column 4:\n\nColumn 1: Уникальный номер заказа для мерчанта.\u001fНа текущий момент называется Поставка; Column 2: Заказ; Column 3: да; Column 4:\n\n1. Список данных передаваемых **ОТ МЕРЧАНТА** в методе \"Передача заказа курьеру\"\n\nНазвание и описание поля:\n\nОбщее описание поля: Название поля\n\nУникальный номер заказа для мерчанта.\u001fНа текущий момент называется Поставка: Заказ\n\n1. Список данных передаваемых **ОТ МЕРЧАНТА** в методе \"Выдача покупателю \"\n\nНазвание и описание поля:\n\nОбщее описание поля: Название поля\n\nУникальный номер заказа для мерчанта.\u001fНа текущий момент называется Поставка: Заказ\n\n1. Список данных передаваемых **ОТ МЕРЧАНТА** в методе \"Отмена заказа \"\n\nColumn 1: Название и описание поля; Column 2: Требования к заполнению поля; Column 3:; Column 4:\n\nColumn 1: Общее описание поля; Column 2: Название поля; Column 3: Обязательность; Column 4: Валидация\n\nColumn 1: Уникальный номер заказа для мерчанта. На текущий момент называется Поставка; Column 2: Заказ; Column 3: да; Column 4:\n\nColumn 1: Причина отмены из списка; Column 2: Причина отмены; Column 3: да; Column 4: Причина отмены из списка причин отмены\n\n### Техисследование:\n\nВсе запросы осуществляются с передачей токена в header\n\nAuthorization: Bearer <значение токена>\n\n**Обработка ошибок**\n\nВсе ошибки со статусом _400_ транслируем мерчантам, ошибки со статусом _409_ и _412_ так же прокидываем в Seller API.\n\n**Все ошибки должны быть задокументированы в swagger.**\n\nФормат ошибок:\n\n```\n{ \"errors\": [ { \"code\": \"string\", \"message\": \"string\" } ] }\n```\n\n**Список заказов**\n\n` GET``/api/merchant-portal/seller/v1/orders `\n\n```\nЗапрос:\nпараметры фильтрации:\nid\ndelivery - массив из типов доставки (COURIER | PICKUP | PVZ)\nstatus - массив (CONFIRMED | READY_4_SHIPMENT | READY_4_GIVEAWAY | GIVEN_AWAY | IN_DELIVERY | COMPLETED | CANCELED)\ndateFrom и dateTo - один из или оба (datetime, пример: 2025-01-01T09:15:00+00:00)\nwarehouseId - один склад\n\nсортировка:\nsort пример id:asc\n\nОтвет:\n[ meta: { page: number, perPage: number, totalCount: number }, data: [ { id: '', warehouse: { id: '', name: '', address: '' }, delivery: { type: COURIER | PICKUP | PVZ, }, status: CONFIRMED | READY_4_SHIPMENT | READY_4_GIVEAWAY | GIVEN_AWAY | IN_DELIVERY | COMPLETED | CANCELED, createdAt: '', plannedDeliveredAt: '' }, ] ]\n```\n\n**Получение заказа по id**\n\n` GET``/api/merchant-portal/seller/v1/orders/{id} `\n\n```\nОтвет\n{ id: '', warehouse: { id: '', name: '', address: '' }, delivery: { type: COURIER | PICKUP | PVZ, operator: KSE | RUS_POST, status: NEW | CONFIRMED | ASSEMBLED | ACCEPTED | SHIPPED | IN_PROGRESS | READY_4_GIVEAWAY | DELIVERY_REFUSED | CLIENT_REFUSED | COMPLETED | CANCELED, containers: [ number: string, weight: number, length: number, width: number, height: number, items: [{ id: string, //product id quantity: int, }] ] }, status: CONFIRMED | READY_4_SHIPMENT | READY_4_GIVEAWAY | GIVEN_AWAY | IN_DELIVERY | COMPLETED | CANCELED, createdAt: '', plannedDeliveriedAt: '', realDeliveriedAt: '', canceledAt: '', // может быть пустым canceledReason: '', //может быть пустым items: [{ id: string, //product id (pimId) code: string, //код продавца name: string, quantity: int, article: number, price: number, discountPrice: number, brand: string }] }\n```\n\nTODO код 1с тоже нужно подмешивать **(требует доработки на стороне мерчант-портала)**\n\n**TODO чтобы получить бренд нужно сходить в pim по id продукта**\n\n**Подтверждение самовывоза**\n\n```\nPOST /api/merchant-portal/seller/v1/orders/{id}:confirm-pickup-shipment\n```\n\n```\nЗапрос { \"code\": \"string\" // 6 цифр }\n\nОтвет\n200 статус - ok, пустой ответ\n400 статус - ошибки\n412 статус - ошибки\n```\n\n**Генерация кода**\n\n` POST``/api/merchant-portal/seller/v1/pickup-codes:generate `\n\n```\nЗапрос { \"orderId\": \"string\" // number string }\n\nОтвет\n200 статус - ok, пустой ответ\n400 статус - ошибки\n```\n\n**Комплектация заказа**\n\n```\nPOST /api/merchant-portal/seller/v1/orders/{id}:confirm-assembly\n```\n\n```\nЗапрос\n{ \"items\": [{ id: \"string\", quantity: int, // >=1 markCodes: [string] }], \"containers\": [{ weight: number, length: number, width: number, height: number, items: [ id: string, quantity: int, // >=1 ] }] }\n\nОтвет\n200 статус - ok, пустой ответ\n400 статус - ошибки\n409 статус - ошибки\n412 статус - ошибки\n```\n\n_в массив **containers**, на уровне seller api будет добавляться новый атрибут number, наполнение этого поля происходит из TMS_\n\n**Отмена заказа**\n\n```\nPOST /api/merchant-portal/seller/v1/orders/{id}:cancel\n```\n\n```\nЗапрос\n{\n    \"reason\": \"string\", //необязательное поле, ограничим по длине 255\n    \"comment\": \"string\", //необязательное поле, ограничим по длине 255\n}\n\nОтвет\n200 статус - ok, пустой ответ\n412 статус - ошибки\n```\n\n**Отгрузка поставки**\n\n```\nPOST /api/merchant-portal/seller/v1/orders/{id}:confirm-shipment\n```\n\nОтвет\n\n200 статус - ok, пустой ответ\n400 статус - ошибки\n409 статус - ошибки",
+        "outline": [
+            "Контекст",
+            "Метод \" Получить список заказов\"",
+            "Метод \"Получение заказа по id\"",
+            "Метод \"Комплектация заказа\"",
+            "Техисследование:"
+        ],
+        "stats": {
+            "chars": 20826,
+            "lines": 341,
+            "approxTokens": 5207
+        },
+        "warnings": [
+            "Unwrapped 5 accidental fenced blocks",
+            "Wrapped 73 technical tokens in inline code",
+            "Removed 12 empty blocks",
+            "Converted 13 tables to key-value blocks"
+        ]
+    }
+}
