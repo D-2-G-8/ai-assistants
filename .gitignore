@@ -42,4 +42,4 @@ next-env.d.ts
 
 /tests
 
-/lib/text-prep/__fixtures__/
+/shared/lib/text-prep/__fixtures__/

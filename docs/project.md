@@ -1,5 +1,7 @@
 # BA Copilot: Project Overview
 
+Architecture details live in docs/architecture.md.
+
 BA Copilot is a Next.js App Router application that provides a Confluence-style
 editor with AI-assisted linting. It is designed to help business analysts and
 product teams review requirements, catch ambiguities, and ask clarifying
@@ -164,10 +166,10 @@ This keeps the UI fast and avoids requiring a DB during early iteration.
 
 Main UI pieces:
 
-- `components/Editor.tsx`: Rich editor with highlights.
-- `components/RightPanel.tsx`: Shows issues/questions and severity.
-- `components/TopBar.tsx`: Controls for save/run check.
-- `components/SanitizeDev.tsx`: Dev preview for prepareText output.
+- `platform/editor/tiptap/Editor.tsx`: Rich editor with highlights.
+- `features/review/FindingsList.tsx`: Shows findings/questions and severity.
+- `features/document/TopBar.tsx`: Controls for save/run check.
+- `features/document/SanitizeDev.tsx`: Dev preview for prepareText output.
 
 ## Configuration & Environment
 
@@ -226,11 +228,15 @@ npm test
 
 - `app/`
   - Next.js App Router pages and route handlers.
+- `platform/`
+  - Core platform modules (assistant runtime, artifacts, editor, storage).
+- `features/`
+  - Feature-focused UI (document editor shell, findings).
+- `shared/`
+  - Shared utilities and UI primitives.
 - `lib/`
   - Server-side and shared helpers.
   - `text-prep/` is the canonical text cleaning pipeline.
-- `components/`
-  - UI components for the editor and panels.
 - `tests/`
   - API and fixture tests.
 - `docs/`

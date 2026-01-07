@@ -1,5 +1,5 @@
 import "@tiptap/core";
-import type { HighlightRange } from "@/lib/highlight";
+import type { HighlightRange } from "@/platform/editor/tiptap/highlight";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {

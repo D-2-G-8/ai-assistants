@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import SanitizeDev from "@/components/SanitizeDev";
+import SanitizeDev from "@/features/document/SanitizeDev";
 
 export default function SanitizePage() {
   if (process.env.NODE_ENV !== "development") {

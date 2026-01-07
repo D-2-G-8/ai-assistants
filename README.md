@@ -23,37 +23,45 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Model Response Format
+## Assistant Output Format
 
-The `/api/lint` route expects the model to return strict JSON:
+The `/api/assistant/run` route expects the model to return strict JSON. Each
+profile defines its own output schema; the lint profile still uses legacy
+`issues/questions` and is normalized into `findings/artifacts` internally.
 
 ```json
 {
-  "issues": [
+  "findings": [
     {
-      "id": "ISSUE-001",
-      "severity": "blocker|warning|suggestion",
+      "id": "F-001",
+      "severity": "error|warn|info",
+      "kind": "issue|question|recommendation",
+      "message": "what is wrong / question text",
+      "suggestion": "how to fix / why it matters",
       "category": "missing|ambiguity|consistency|testability|glossary|scope",
-      "quote": "short text fragment (if any)",
-      "message": "what is wrong",
-      "fix_suggestion": "how to fix",
-      "startHint": "where to look (section name or unique phrase)",
-      "endHint": "optional",
-      "question": "optional clarifying question"
+      "anchor": {
+        "quote": "short text fragment (if any)",
+        "startHint": "where to look (section name or unique phrase)",
+        "endHint": "optional"
+      }
     }
   ],
-  "questions": [
-    {
-      "id": "Q-001",
-      "severity": "blocker|warning",
-      "question": "question for BA",
-      "reason": "why it matters"
-    }
-  ]
+  "artifacts": []
 }
 ```
 
-The API validates with Zod. If the model returns invalid JSON, the UI safely falls back to empty issues/questions and reports the error via an `x-lint-error` header.
+The API validates with Zod. If the model returns invalid JSON, the UI falls back to empty results and reports the error via headers.
+
+`/api/lint` remains as a backward-compatible proxy and maps findings into legacy `issues/questions`.
+
+## Adding a new AssistantProfile
+
+1. Define a new profile in `platform/assistant-runtime/profiles.ts` (id, docTypes, actions, schemas, UI schema).
+2. Add a prompt template in `platform/assistant-runtime/promptTemplates.ts` and include it in `promptTemplates`.
+3. Make sure `promptTemplateId`/`promptTemplateVersion` in the profile match the template.
+4. The registry resolves profiles by `{ docType, action }`, so UI will pick it automatically once available.
+
+Example: create a `tech-lint` profile by cloning `lintProfile` with `docTypes: ["technical"]` and a new id.
 
 ## End-to-End Check
 
@@ -67,6 +75,6 @@ The API validates with Zod. If the model returns invalid JSON, the UI safely fal
 
 ## Notes
 
-- Documents are stored in `localStorage` for the MVP.
-- OpenRouter keys stay server-side via `/api/lint`.
+- Documents and run history are stored in `localStorage` for the MVP.
+- OpenRouter keys stay server-side via `/api/assistant/run` (and `/api/lint` proxy).
 - Text preparation pipeline docs live in `docs/text-prep.md`.

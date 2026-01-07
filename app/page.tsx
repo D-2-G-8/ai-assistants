@@ -2,12 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import {
-  createDoc,
-  getDocsServerSnapshot,
-  getDocsSnapshot,
-  subscribeDocs,
-} from "@/lib/storage";
+import { documentStore } from "@/platform/storage/documentStore";
 
 const formatDate = (value: string) => {
   const date = new Date(value);
@@ -23,9 +18,9 @@ const formatDate = (value: string) => {
 export default function Home() {
   const router = useRouter();
   const docs = useSyncExternalStore(
-    subscribeDocs,
-    getDocsSnapshot,
-    getDocsServerSnapshot
+    documentStore.subscribe,
+    documentStore.getSnapshot,
+    documentStore.getServerSnapshot
   );
 
   const sortedDocs = useMemo(() => {
@@ -38,13 +33,13 @@ export default function Home() {
 
   const handleCreate = () => {
     const id = crypto.randomUUID();
-    createDoc(id, "New Product Doc");
-    router.push(`/doc/${id}`);
+    documentStore.create(id, { title: "New Product Doc" });
+    router.push(`/documents/${id}`);
   };
 
   const handleOpenLast = () => {
     if (!lastDoc) return;
-    router.push(`/doc/${lastDoc.id}`);
+    router.push(`/documents/${lastDoc.id}`);
   };
 
   return (
@@ -99,7 +94,7 @@ export default function Home() {
                 <button
                   key={doc.id}
                   type="button"
-                  onClick={() => router.push(`/doc/${doc.id}`)}
+                  onClick={() => router.push(`/documents/${doc.id}`)}
                   className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-5 py-4 text-left transition hover:border-slate-400"
                 >
                   <div>

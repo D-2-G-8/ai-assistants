@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import { callOpenRouter } from "@/lib/openrouter";
-import { lintRequestSchema, lintResponseSchema } from "@/lib/schemas";
-import { buildLintPromptParts } from "@/lib/lint-prompt";
-import { tiptapToMarkdown } from "@/lib/text-prep/tiptapToMarkdown";
-import { SYSTEM_PROMPT } from "@/lib/lint-constants";
+import { lintRequestSchema } from "@/shared/lib/schemas";
+import { resolveAssistantProfile } from "@/platform/assistant-runtime/registry";
+import { runAssistantPipeline } from "@/platform/assistant-runtime/runPipeline";
+import type { Finding } from "@/platform/artifacts/types";
+import type { Issue, Question } from "@/shared/lib/schemas";
+import { createId } from "@/shared/lib/id";
+import { runStore } from "@/platform/storage/runStore";
 
 export const dynamic = "force-dynamic";
 
@@ -34,78 +36,109 @@ export async function POST(request: Request) {
   const { title, content, contentJson, qaContext, dryRun } =
     parsedRequest.data;
   const includeSanitized = process.env.NODE_ENV === "development";
-  const resolvedContent =
-    contentJson && typeof contentJson === "object"
-      ? tiptapToMarkdown(contentJson as Record<string, unknown>) || content || ""
-      : content || "";
-  const promptParts = buildLintPromptParts({
-    title,
-    content: resolvedContent,
-    qaContext,
+
+  const profile = resolveAssistantProfile({
+    docType: "business",
+    action: "lint",
   });
 
-  const userPrompt = promptParts.userPrompt;
+  if (!profile) {
+    headers.set("x-lint-error", "No assistant profile found for lint");
+    return NextResponse.json(
+      { issues: [], questions: [] },
+      { status: 200, headers }
+    );
+  }
+
+  const result = await runAssistantPipeline({
+    request: {
+      documentId: createId(),
+      action: "lint",
+      document: {
+        title,
+        docType: "business",
+        content:
+          contentJson && typeof contentJson === "object"
+            ? (contentJson as Record<string, unknown>)
+            : { type: "doc", content: [] },
+        contentText: content || "",
+        meta: {},
+        versionId: createId(),
+      },
+      inputs: qaContext ? { qaContext } : undefined,
+      dryRun,
+    },
+    profile,
+    apiKey,
+    model,
+    persistRun: dryRun ? undefined : runStore.add,
+  });
 
   if (dryRun) {
-    const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
-    const responseBody = {
-      userPrompt,
-      fullPrompt,
-      prep: promptParts.prepResult,
-      outline: promptParts.outline,
-    };
-    return NextResponse.json(responseBody, { status: 200, headers });
-  }
-
-  let rawResponse: string;
-  try {
-    rawResponse = await callOpenRouter({
-      apiKey,
-      model,
-      temperature: 0.25,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-    });
-  } catch (error) {
-    headers.set("x-lint-error", (error as Error).message);
+    const fullPrompt = `${result.promptSnapshot.system}\n\n${result.promptSnapshot.user}`;
     return NextResponse.json(
-      { issues: [], questions: [] },
+      {
+        userPrompt: result.promptSnapshot.user,
+        fullPrompt,
+        prep: result.prepResult,
+        outline: result.outline,
+      },
       { status: 200, headers }
     );
   }
 
-  let jsonResponse: unknown;
-  try {
-    jsonResponse = JSON.parse(rawResponse);
-  } catch (error) {
+  if (result.run.status === "failed") {
     headers.set(
       "x-lint-error",
-      `Failed to parse JSON: ${(error as Error).message}`
-    );
-    return NextResponse.json(
-      { issues: [], questions: [] },
-      { status: 200, headers }
+      result.run.error || "Assistant run failed"
     );
   }
 
-  const parsedResponse = lintResponseSchema.safeParse(jsonResponse);
-  if (!parsedResponse.success) {
-    headers.set("x-lint-error", "Model response did not match schema");
-    return NextResponse.json(
-      { issues: [], questions: [] },
-      { status: 200, headers }
-    );
-  }
+  const findings = result.run.result?.findings ?? [];
+
+  const toIssueSeverity = (severity: Finding["severity"]): Issue["severity"] => {
+    if (severity === "error") return "blocker";
+    if (severity === "warn") return "warning";
+    return "suggestion";
+  };
+
+  const toQuestionSeverity = (
+    severity: Finding["severity"]
+  ): Question["severity"] => {
+    if (severity === "error") return "blocker";
+    return "warning";
+  };
+
+  const issues: Issue[] = findings
+    .filter((finding) => finding.kind !== "question")
+    .map((finding) => ({
+      id: finding.id,
+      severity: toIssueSeverity(finding.severity),
+      category: (finding.category as Issue["category"]) || "missing",
+      quote: finding.anchor?.quote ?? null,
+      message: finding.message,
+      fix_suggestion: finding.suggestion || "",
+      startHint: finding.anchor?.startHint ?? null,
+      endHint: finding.anchor?.endHint ?? null,
+      question: null,
+    }));
+
+  const questions: Question[] = findings
+    .filter((finding) => finding.kind === "question")
+    .map((finding) => ({
+      id: finding.id,
+      severity: toQuestionSeverity(finding.severity),
+      question: finding.message,
+      reason: finding.suggestion || "",
+    }));
 
   const safeResponse = {
-    issues: parsedResponse.data.issues.slice(0, 12),
-    questions: parsedResponse.data.questions.slice(0, 8),
+    issues: issues.slice(0, 12),
+    questions: questions.slice(0, 8),
   };
 
   const responseBody = includeSanitized
-    ? { ...safeResponse, prep: promptParts.prepResult }
+    ? { ...safeResponse, prep: result.prepResult }
     : safeResponse;
 
   return NextResponse.json(responseBody, { status: 200, headers });

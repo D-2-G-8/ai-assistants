@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prepareText } from "@/lib/text-prep";
-import { prepareTextRequestSchema } from "@/lib/prepare-text-schema";
+import { prepareText } from "@/shared/lib/text-prep";
+import { prepareTextRequestSchema } from "@/shared/lib/prepare-text-schema";
 
 export const dynamic = "force-dynamic";
 

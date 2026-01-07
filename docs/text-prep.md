@@ -11,7 +11,7 @@ before sending it to the linting model. It produces:
 ## prepareText() usage
 
 ```ts
-import { prepareText } from "@/lib/text-prep";
+import { prepareText } from "@/shared/lib/text-prep";
 
 const result = prepareText(inputText, {
   maxHeadingDepth: 4,
