@@ -1,16 +1,7 @@
 "use client";
 
 import type { RunRecord } from "@/platform/storage/types";
-
-const formatDate = (value: string) => {
-  const date = new Date(value);
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-};
+import { formatDate } from "@/shared/lib/utils/formatDate";
 
 type RunHistoryPanelProps = {
   runs: RunRecord[];
@@ -24,7 +15,7 @@ export default function RunHistoryPanel({ runs }: RunHistoryPanelProps) {
       </h3>
       {runs.length === 0 ? (
         <p className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-3 text-xs text-slate-500">
-          No runs yet. Trigger a lint to see history.
+          No runs yet. Trigger an assistant run to see history.
         </p>
       ) : (
         <div className="flex flex-col gap-2">

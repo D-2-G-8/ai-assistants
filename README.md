@@ -25,7 +25,7 @@ Open `http://localhost:3000`.
 
 ## Assistant Output Format
 
-The `/api/assistant/run` route expects the model to return strict JSON. Each
+The `/api/ba-reviewer` route expects the model to return strict JSON. Each
 profile defines its own output schema; the lint profile still uses legacy
 `issues/questions` and is normalized into `findings/artifacts` internally.
 
@@ -52,8 +52,6 @@ profile defines its own output schema; the lint profile still uses legacy
 
 The API validates with Zod. If the model returns invalid JSON, the UI falls back to empty results and reports the error via headers.
 
-`/api/lint` remains as a backward-compatible proxy and maps findings into legacy `issues/questions`.
-
 ## Adding a new AssistantProfile
 
 1. Define a new profile in `platform/assistant-runtime/profiles.ts` (id, docTypes, actions, schemas, UI schema).
@@ -76,5 +74,5 @@ Example: create a `tech-lint` profile by cloning `lintProfile` with `docTypes: [
 ## Notes
 
 - Documents and run history are stored in `localStorage` for the MVP.
-- OpenRouter keys stay server-side via `/api/assistant/run` (and `/api/lint` proxy).
+- OpenRouter keys stay server-side via `/api/ba-reviewer`.
 - Text preparation pipeline docs live in `docs/text-prep.md`.

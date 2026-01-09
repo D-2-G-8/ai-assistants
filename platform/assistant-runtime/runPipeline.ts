@@ -1,4 +1,4 @@
-import { callOpenRouter } from "@/shared/lib/openrouter";
+import { callOpenRouter } from "@/shared/lib/ai/openrouter";
 import { normalizeAssistantResult } from "@/platform/artifacts/normalize";
 import type {
   AssistantProfile,
@@ -7,7 +7,7 @@ import type {
 import type { AssistantResult } from "@/platform/artifacts/types";
 import { getPromptTemplate } from "@/platform/assistant-runtime/promptRegistry";
 import type { RunRecord } from "@/platform/storage/types";
-import { createId } from "@/shared/lib/id";
+import { createId } from "@/shared/lib/utils/id";
 
 const extractJsonPayload = (raw: string) => {
   const trimmed = raw.trim();

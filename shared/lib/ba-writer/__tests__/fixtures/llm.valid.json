@@ -1,0 +1,378 @@
+{
+  "doc": {
+    "title": "Sample BA Document",
+    "version": "0.1",
+    "status": "Draft"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "sectionId": "doc.passport",
+      "level": 1,
+      "text": "Паспорт документа",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "paragraph",
+      "sectionId": "doc.passport",
+      "text": "Документ описывает сбор и обработку запросов клиентов.",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "context",
+      "level": 1,
+      "text": "Контекст и цель",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "paragraph",
+      "sectionId": "context",
+      "text": "Цель — обеспечить единый процесс приема и маршрутизации запросов.",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "roles",
+      "level": 1,
+      "text": "Стейкхолдеры и роли",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "roles",
+      "tableType": "roles",
+      "columns": [
+        "Роль",
+        "Описание",
+        "Цели/мотивация",
+        "Ограничения/особенности"
+      ],
+      "rows": [
+        [
+          "Сотрудник поддержки",
+          "Принимает обращения",
+          "Сократить время реакции",
+          "Ограничен регламентом"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "scope",
+      "level": 1,
+      "text": "Область работ",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "bulletList",
+      "sectionId": "scope",
+      "items": [
+        "In scope: форма запроса, базовая валидация, ручная проверка",
+        "Out of scope: интеграции с внешними системами"
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "process",
+      "level": 1,
+      "text": "Процессы и сценарии",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "process",
+      "tableType": "scenarios",
+      "columns": ["ID", "Роль", "Цель", "Триггер", "Результат"],
+      "rows": [
+        [
+          "SC-1",
+          "Клиент",
+          "Отправить запрос",
+          "Потребность в помощи",
+          "Запрос зарегистрирован"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "process",
+      "tableType": "process_steps",
+      "columns": [
+        "№",
+        "Шаг",
+        "Исполнитель (роль)",
+        "Вход",
+        "Выход",
+        "Комментарий/условия"
+      ],
+      "rows": [
+        [
+          "1",
+          "Заполнить форму",
+          "Клиент",
+          "Данные запроса",
+          "Созданный запрос",
+          "Обязательные поля заполнены"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "requirements",
+      "level": 1,
+      "text": "Требования",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "requirements",
+      "tableType": "requirements_matrix",
+      "columns": [
+        "Бизнес-цель/потребность",
+        "Требование",
+        "Ожидаемый результат",
+        "Приоритет",
+        "Критерии приемки",
+        "Статус"
+      ],
+      "rows": [
+        [
+          "Сократить время реакции",
+          "Единая форма запроса",
+          "Запросы поступают в одном формате",
+          "Высокий",
+          "Все обязательные поля заполнены",
+          "Draft"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "requirements",
+      "tableType": "business_rules",
+      "columns": [
+        "Правило",
+        "Когда применяется",
+        "Исключения",
+        "Примечания/риски"
+      ],
+      "rows": [
+        [
+          "Контакт обязателен",
+          "При создании запроса",
+          "Нет",
+          "Без контакта обработка невозможна"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "requirements",
+      "tableType": "quality_expectations",
+      "columns": ["Категория", "Ожидание", "Как проверяем"],
+      "rows": [
+        [
+          "Удобство",
+          "Понятные подсказки",
+          "Проверка с пользователями"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "data",
+      "level": 1,
+      "text": "Данные на бизнес-уровне",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "data",
+      "tableType": "business_entities",
+      "columns": [
+        "Сущность",
+        "Описание",
+        "Ключевые атрибуты",
+        "Связи/заметки"
+      ],
+      "rows": [
+        [
+          "Запрос",
+          "Обращение клиента",
+          "Номер, статус",
+          "Связан с клиентом"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "data",
+      "tableType": "dictionaries",
+      "columns": [
+        "Справочник",
+        "Описание",
+        "Владелец",
+        "Правила обновления/примечания"
+      ],
+      "rows": [
+        [
+          "Статусы",
+          "Набор статусов запроса",
+          "Продукт",
+          "Обновляется при изменении процесса"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "exceptions",
+      "level": 1,
+      "text": "Обработка проблемных ситуаций",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "exceptions",
+      "tableType": "exception_handling",
+      "columns": [
+        "Ситуация",
+        "Как распознаём (бизнес-условие)",
+        "Что показываем пользователю",
+        "Что пользователь может сделать",
+        "Что происходит с данными"
+      ],
+      "rows": [
+        [
+          "Не заполнены обязательные поля",
+          "Поля пустые",
+          "Сообщение о необходимости заполнить",
+          "Заполнить данные",
+          "Запрос не сохраняется"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "acceptance",
+      "level": 1,
+      "text": "Приемка",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "acceptance",
+      "tableType": "acceptance_criteria",
+      "columns": [
+        "Ссылка (требование/сценарий)",
+        "Критерий",
+        "Пример/данные"
+      ],
+      "rows": [
+        [
+          "REQ-1",
+          "Форма не принимает пустые обязательные поля",
+          "Пустые значения"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "bulletList",
+      "sectionId": "acceptance",
+      "items": ["Крайний случай: все поля пустые"],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "tracking",
+      "level": 1,
+      "text": "Открытые вопросы и риски",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "tracking",
+      "tableType": "open_questions",
+      "columns": ["Вопрос", "Варианты", "Ответственный", "Дедлайн", "Статус"],
+      "rows": [
+        [
+          "Кто утверждает шаблоны?",
+          "Продукт или комплаенс",
+          "Продукт",
+          "TBD",
+          "Open"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "table",
+      "sectionId": "tracking",
+      "tableType": "risks",
+      "columns": ["Риск", "Влияние", "Вероятность", "Митигация"],
+      "rows": [
+        [
+          "Низкое использование формы",
+          "Среднее",
+          "Средняя",
+          "Коммуникация и обучение"
+        ]
+      ],
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "heading",
+      "sectionId": "changelog",
+      "level": 1,
+      "text": "История изменений",
+      "origin": "user",
+      "suggestionId": null
+    },
+    {
+      "type": "orderedList",
+      "sectionId": "changelog",
+      "items": ["0.1 — Черновик документа"],
+      "origin": "user",
+      "suggestionId": null
+    }
+  ],
+  "suggestions": [],
+  "missingInfo": []
+}

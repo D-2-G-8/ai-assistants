@@ -1,0 +1,6 @@
+Project: Customer request intake
+Goal: Collect customer requests and route them to the right team.
+Stakeholders: Support, Operations, Product.
+In scope: New intake form, basic validation, manual review.
+Out of scope: Backend integrations, analytics dashboard.
+Open question: Who approves the request templates?

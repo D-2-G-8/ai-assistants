@@ -55,7 +55,7 @@ const resolveDocTitle = (
   return trimmedTitle || "Untitled Document";
 };
 
-export const buildLintPromptParts = (params: {
+export const buildDocumentPromptParts = (params: {
   title?: string;
   content: string;
   qaContext?: Array<{ id: string; question: string; answer: string }>;

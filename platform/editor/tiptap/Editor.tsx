@@ -1,48 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import clsx from "clsx";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { TableKit } from "@tiptap/extension-table";
-import { TextSelection } from "@tiptap/pm/state";
+import type { Editor as TiptapEditor, Extensions } from "@tiptap/core";
 import { createLowlight } from "lowlight";
 import ts from "highlight.js/lib/languages/typescript";
 import json from "highlight.js/lib/languages/json";
 import { AiHighlight, buildHighlightRanges } from "@/platform/editor/tiptap/highlight";
+import EditorToolbar from "@/platform/editor/tiptap/EditorToolbar";
 import type { Finding } from "@/platform/artifacts/types";
 
 type EditorProps = {
   content: Record<string, unknown>;
-  findings: Finding[];
-  ignoredFindingIds: string[];
+  findings?: Finding[];
+  ignoredFindingIds?: string[];
   onUpdate: (content: Record<string, unknown>, text: string) => void;
   onReady?: (text: string) => void;
+  onEditorReady?: (editor: TiptapEditor) => void;
+  onSelectionTextChange?: (text: string) => void;
+  placeholder?: string;
+  extensions?: Extensions;
 };
-
-type ToolbarButtonProps = {
-  label: string;
-  active?: boolean;
-  onClick: () => void;
-};
-
-const ToolbarButton = ({ label, active, onClick }: ToolbarButtonProps) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={clsx(
-      "rounded-full border px-3 py-1 text-xs font-semibold transition",
-      active
-        ? "border-slate-900 bg-slate-900 text-white"
-        : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"
-    )}
-  >
-    {label}
-  </button>
-);
 
 const lowlight = createLowlight();
 lowlight.register("ts", ts);
@@ -51,10 +34,14 @@ lowlight.register("json", json);
 
 export default function Editor({
   content,
-  findings,
-  ignoredFindingIds,
+  findings = [],
+  ignoredFindingIds = [],
   onUpdate,
   onReady,
+  onEditorReady,
+  onSelectionTextChange,
+  placeholder = "Start writing a doc the Confluence way...",
+  extensions = [],
 }: EditorProps) {
   const editorWrapperRef = useRef<HTMLDivElement | null>(null);
   const [tableMenu, setTableMenu] = useState<{
@@ -66,7 +53,7 @@ export default function Editor({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [1, 2, 3],
+          levels: [1, 2, 3, 4],
         },
         codeBlock: false,
       }),
@@ -86,8 +73,9 @@ export default function Editor({
         },
       }),
       Placeholder.configure({
-        placeholder: "Start writing a doc the Confluence way...",
+        placeholder,
       }),
+      ...extensions,
       AiHighlight,
     ],
     content,
@@ -97,6 +85,7 @@ export default function Editor({
       },
     },
     onCreate({ editor }) {
+      onEditorReady?.(editor);
       onReady?.(editor.getText());
     },
     onUpdate({ editor }) {
@@ -120,15 +109,29 @@ export default function Editor({
 
   useEffect(() => {
     if (!editor) return;
+
+    const updateSelectionText = () => {
+      if (!onSelectionTextChange) return;
+      const { from, to } = editor.state.selection;
+      if (from === to) {
+        onSelectionTextChange("");
+        return;
+      }
+      const text = editor.state.doc.textBetween(from, to, "\n").trim();
+      onSelectionTextChange(text);
+    };
+
     const updateFromSelection = () => {
       if (!editor.isFocused) {
         updateTableMenu(null);
+        updateSelectionText();
         return;
       }
 
       const wrapper = editorWrapperRef.current;
       if (!wrapper) {
         updateTableMenu(null);
+        updateSelectionText();
         return;
       }
 
@@ -141,6 +144,7 @@ export default function Editor({
 
       if (!cell) {
         updateTableMenu(null);
+        updateSelectionText();
         return;
       }
 
@@ -150,10 +154,12 @@ export default function Editor({
       const left = cellRect.right - wrapperRect.left;
 
       updateTableMenu({ top, left });
+      updateSelectionText();
     };
 
     const handleBlur = () => {
       updateTableMenu(null);
+      updateSelectionText();
     };
 
     editor.on("selectionUpdate", updateFromSelection);
@@ -164,7 +170,7 @@ export default function Editor({
       editor.off("selectionUpdate", updateFromSelection);
       editor.off("blur", handleBlur);
     };
-  }, [editor]);
+  }, [editor, onSelectionTextChange]);
 
   useEffect(() => {
     if (!editor) return;
@@ -183,38 +189,6 @@ export default function Editor({
     );
   }
 
-  const setLink = () => {
-    const previousUrl = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Enter URL", previousUrl || "");
-    if (url === null) return;
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  };
-
-  const insertCodeBlock = () => {
-    if (editor.isActive("codeBlock")) {
-      editor.chain().focus().toggleCodeBlock().run();
-      return;
-    }
-
-    const didSet = editor.chain().focus().setCodeBlock().run();
-    if (didSet) return;
-
-    const { state, view } = editor;
-    const codeBlock = state.schema.nodes.codeBlock;
-    if (!codeBlock) return;
-
-    const { from, to } = state.selection;
-    let tr = state.tr.replaceRangeWith(from, to, codeBlock.create());
-    const nextPos = Math.min(tr.doc.content.size, from + 1);
-    tr = tr.setSelection(TextSelection.near(tr.doc.resolve(nextPos)));
-    view.dispatch(tr.scrollIntoView());
-    view.focus();
-  };
-
   const deleteRow = () => {
     if (!editor) return;
     editor.chain().focus().deleteRow().run();
@@ -229,64 +203,7 @@ export default function Editor({
 
   return (
     <div className="flex h-full min-w-0 flex-col gap-4">
-      <div className="sticky top-24 z-10 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-sm backdrop-blur">
-        <ToolbarButton
-          label="H1"
-          active={editor.isActive("heading", { level: 1 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        />
-        <ToolbarButton
-          label="H2"
-          active={editor.isActive("heading", { level: 2 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        />
-        <ToolbarButton
-          label="H3"
-          active={editor.isActive("heading", { level: 3 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        />
-        <ToolbarButton
-          label="Bold"
-          active={editor.isActive("bold")}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        />
-        <ToolbarButton
-          label="Italic"
-          active={editor.isActive("italic")}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        />
-        <ToolbarButton
-          label="Code block"
-          active={editor.isActive("codeBlock")}
-          onClick={insertCodeBlock}
-        />
-        <ToolbarButton label="Link" onClick={setLink} />
-        <ToolbarButton
-          label="Bullet list"
-          active={editor.isActive("bulletList")}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-        />
-        <ToolbarButton
-          label="Ordered list"
-          active={editor.isActive("orderedList")}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        />
-        <ToolbarButton
-          label="Quote"
-          active={editor.isActive("blockquote")}
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        />
-        <ToolbarButton
-          label="Table"
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-              .run()
-          }
-        />
-      </div>
+      <EditorToolbar editor={editor} />
       <div
         ref={editorWrapperRef}
         className="relative flex-1 rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm"
@@ -300,23 +217,23 @@ export default function Editor({
               left: tableMenu.left,
               transform: "translate(-100%, -110%)",
             }}
+          >
+            <button
+              type="button"
+              onClick={deleteRow}
+              onMouseDown={(event) => event.preventDefault()}
+              className="rounded-full px-2 py-0.5 transition hover:bg-slate-100"
             >
-              <button
-                type="button"
-                onClick={deleteRow}
-                onMouseDown={(event) => event.preventDefault()}
-                className="rounded-full px-2 py-0.5 transition hover:bg-slate-100"
-              >
-                Delete row
-              </button>
-              <button
-                type="button"
-                onClick={deleteColumn}
-                onMouseDown={(event) => event.preventDefault()}
-                className="rounded-full px-2 py-0.5 transition hover:bg-slate-100"
-              >
-                Delete column
-              </button>
+              Delete row
+            </button>
+            <button
+              type="button"
+              onClick={deleteColumn}
+              onMouseDown={(event) => event.preventDefault()}
+              className="rounded-full px-2 py-0.5 transition hover:bg-slate-100"
+            >
+              Delete column
+            </button>
           </div>
         )}
       </div>

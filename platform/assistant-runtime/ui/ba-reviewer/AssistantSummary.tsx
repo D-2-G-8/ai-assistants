@@ -1,21 +1,12 @@
 "use client";
 
+import { formatDate } from "@/shared/lib/utils/formatDate";
+
 type AssistantSummaryProps = {
   blockerCount: number;
   warningCount: number;
   suggestionCount: number;
   lastCheckedAt?: string;
-};
-
-const formatDate = (value?: string) => {
-  if (!value) return "";
-  const date = new Date(value);
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
 };
 
 export default function AssistantSummary({

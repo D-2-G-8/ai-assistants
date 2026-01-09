@@ -3,16 +3,28 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { documentStore } from "@/platform/storage/documentStore";
+import {
+  resolveWorkflowStage,
+  type WorkflowStage,
+} from "@/shared/lib/document/workflow";
+import { formatDate } from "@/shared/lib/utils/formatDate";
 
-const formatDate = (value: string) => {
-  const date = new Date(value);
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+const stageBadgeConfig: Record<
+  WorkflowStage,
+  { label: string; className: string }
+> = {
+  drafting: {
+    label: "Drafting",
+    className: "bg-amber-100 text-amber-900",
+  },
+  review: {
+    label: "In review",
+    className: "bg-sky-100 text-sky-800",
+  },
+  ready: {
+    label: "Ready",
+    className: "bg-emerald-100 text-emerald-800",
+  },
 };
 
 export default function Home() {
@@ -34,7 +46,7 @@ export default function Home() {
   const handleCreate = () => {
     const id = crypto.randomUUID();
     documentStore.create(id, { title: "New Product Doc" });
-    router.push(`/documents/${id}`);
+    router.push(`/documents/${id}?assistant=writer`);
   };
 
   const handleOpenLast = () => {
@@ -95,18 +107,37 @@ export default function Home() {
                   key={doc.id}
                   type="button"
                   onClick={() => router.push(`/documents/${doc.id}`)}
-                  className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-5 py-4 text-left transition hover:border-slate-400"
+                  className="flex w-full flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/90 px-5 py-4 text-left transition hover:border-slate-400"
                 >
-                  <div>
-                    <p className="text-base font-semibold text-slate-900">
-                      {doc.title}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      Updated {formatDate(doc.updatedAt)}
-                    </p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div>
+                      <p className="text-base font-semibold text-slate-900">
+                        {doc.title}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        Updated {formatDate(doc.updatedAt, { includeYear: true })}
+                        {doc.lastCheckedAt && (
+                          <span className="ml-2">
+                            Reviewed{" "}
+                            {formatDate(doc.lastCheckedAt, { includeYear: true })}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    {(() => {
+                      const stage = resolveWorkflowStage(doc);
+                      const config = stageBadgeConfig[stage];
+                      return (
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-semibold ${config.className}`}
+                        >
+                          {config.label}
+                        </span>
+                      );
+                    })()}
                   </div>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                    {doc.status === "ready" ? "Ready" : "Draft"}
+                  <span className="text-xs font-semibold text-slate-500">
+                    Open
                   </span>
                 </button>
               ))}

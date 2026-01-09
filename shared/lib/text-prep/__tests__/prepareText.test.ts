@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { prepareText } from "./index";
+import { prepareText } from "../index";
 
 const fixturesDir = path.join(__dirname, "__fixtures__");
 const rawSample = readFileSync(

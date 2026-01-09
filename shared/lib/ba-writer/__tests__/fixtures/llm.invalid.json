@@ -1,0 +1,19 @@
+{
+  "doc": {
+    "title": "Invalid BA Document",
+    "version": null,
+    "status": null
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "sectionId": "doc.passport",
+      "level": 1,
+      "text": "Паспорт документа",
+      "origin": "ai",
+      "suggestionId": null
+    }
+  ],
+  "suggestions": [],
+  "missingInfo": []
+}

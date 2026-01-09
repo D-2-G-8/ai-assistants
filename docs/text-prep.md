@@ -26,35 +26,6 @@ console.log(result.cleanedText);
 console.log(result.outline);
 ```
 
-## POST /api/prepare-text
-
-Request:
-
-```json
-{
-  "text": "string",
-  "options": {
-    "maxHeadingDepth": 4,
-    "tableMode": "keep",
-    "dedupeHeadings": true,
-    "dropArtifacts": true,
-    "dropNoiseLines": true,
-    "maxChars": 120000
-  }
-}
-```
-
-Response:
-
-```json
-{
-  "cleanedText": "string",
-  "outline": ["..."],
-  "stats": { "chars": 0, "lines": 0, "approxTokens": 0 },
-  "warnings": ["..."]
-}
-```
-
 ## Options
 
 - maxHeadingDepth: 1..6 (defaults to 4)

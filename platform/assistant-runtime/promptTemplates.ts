@@ -1,5 +1,5 @@
-import { buildLintPromptParts } from "@/shared/lib/lint-prompt";
-import { SYSTEM_PROMPT } from "@/shared/lib/lint-constants";
+import { buildDocumentPromptParts } from "@/shared/lib/document/prompt";
+import { BA_REVIEWER_SYSTEM_PROMPT } from "@/shared/lib/ba-reviewer/prompt";
 import { tiptapToMarkdown } from "@/shared/lib/text-prep/tiptapToMarkdown";
 import type { PromptBuildInput, PromptTemplate } from "@/platform/assistant-runtime/types";
 import {
@@ -31,14 +31,14 @@ export const lintPromptTemplate: PromptTemplate = {
       question: string;
       answer: string;
     }>;
-    const promptParts = buildLintPromptParts({
+    const promptParts = buildDocumentPromptParts({
       title: input.document.title,
       content: resolvedContent,
       qaContext,
     });
 
     return {
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: BA_REVIEWER_SYSTEM_PROMPT,
       userPrompt: promptParts.userPrompt,
       prepResult: promptParts.prepResult,
       outline: promptParts.outline,

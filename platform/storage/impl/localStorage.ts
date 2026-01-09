@@ -1,4 +1,4 @@
-import { createId } from "@/shared/lib/id";
+import { createId } from "@/shared/lib/utils/id";
 import type {
   DocumentRecord,
   DocType,
@@ -38,13 +38,26 @@ const safeParse = <T>(raw: string | null): T | null => {
 
 const normalizeDocument = (doc: DocumentRecord) => {
   let changed = false;
+  const meta =
+    doc.meta && typeof doc.meta === "object" && !Array.isArray(doc.meta)
+      ? doc.meta
+      : {};
+  let normalizedMeta = meta;
+
+  if (doc.status !== "ready") {
+    const stage = normalizedMeta.workflowStage;
+    if (stage !== "drafting" && stage !== "review") {
+      normalizedMeta = {
+        ...normalizedMeta,
+        workflowStage: doc.lastCheckedAt ? "review" : "drafting",
+      };
+    }
+  }
+
   const next: DocumentRecord = {
     ...doc,
     docType: doc.docType ?? DEFAULT_DOC_TYPE,
-    meta:
-      doc.meta && typeof doc.meta === "object" && !Array.isArray(doc.meta)
-        ? doc.meta
-        : {},
+    meta: normalizedMeta,
     versionId: doc.versionId || createId(),
     status: doc.status ?? "draft",
     content: doc.content || EMPTY_CONTENT,

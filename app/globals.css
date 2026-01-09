@@ -229,6 +229,26 @@ h4 {
   transform: translateY(0);
 }
 
+.ba-suggestion {
+  position: relative;
+  border-radius: 0.35rem;
+  padding: 0 0.2rem;
+  background: rgba(191, 219, 254, 0.45);
+  border-bottom: 2px dashed rgba(59, 130, 246, 0.6);
+}
+
+.ba-suggestion-block {
+  position: relative;
+  border-radius: 1rem;
+  border: 1px dashed rgba(59, 130, 246, 0.6);
+  background: rgba(219, 234, 254, 0.4);
+  padding: 0.75rem;
+}
+
+.ba-suggestion-block > * + * {
+  margin-top: 0.6rem;
+}
+
 :focus-visible {
   outline: none;
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import clsx from "clsx";
+import PanelToggleGroup from "@/shared/components/document/PanelToggleGroup";
 import type { DocStatus } from "@/platform/storage/types";
 
-type TopBarProps = {
+type ReviewerTopBarProps = {
   status: DocStatus;
   dirty: boolean;
   panelView: "assistant" | "history" | "none";
@@ -13,7 +14,7 @@ type TopBarProps = {
   onToggleHistoryPanel: () => void;
 };
 
-export default function TopBar({
+export default function ReviewerTopBar({
   status,
   dirty,
   panelView,
@@ -21,7 +22,7 @@ export default function TopBar({
   onSaveReady,
   onToggleAssistantPanel,
   onToggleHistoryPanel,
-}: TopBarProps) {
+}: ReviewerTopBarProps) {
   const isReady = status === "ready";
 
   return (
@@ -55,33 +56,12 @@ export default function TopBar({
             Unsaved changes
           </span>
         )}
-        <div className="ml-auto flex items-center gap-2 text-xs font-semibold text-slate-600">
-          <button
-            type="button"
-            onClick={onToggleAssistantPanel}
-            aria-pressed={panelView === "assistant"}
-            className={clsx(
-              "rounded-full border px-3 py-1 transition",
-              panelView === "assistant"
-                ? "border-slate-900 bg-slate-900 text-white"
-                : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"
-            )}
-          >
-            AI panel
-          </button>
-          <button
-            type="button"
-            onClick={onToggleHistoryPanel}
-            aria-pressed={panelView === "history"}
-            className={clsx(
-              "rounded-full border px-3 py-1 transition",
-              panelView === "history"
-                ? "border-slate-900 bg-slate-900 text-white"
-                : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"
-            )}
-          >
-            History
-          </button>
+        <div className="ml-auto">
+          <PanelToggleGroup
+            panelView={panelView}
+            onToggleAssistantPanel={onToggleAssistantPanel}
+            onToggleHistoryPanel={onToggleHistoryPanel}
+          />
         </div>
       </div>
     </div>

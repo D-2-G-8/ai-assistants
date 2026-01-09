@@ -40,71 +40,6 @@ The app consists of three main layers:
    - Validates request/response with Zod.
    - Enforces response caps (max issues/questions).
 
-## Key Routes
-
-### POST /api/lint
-
-Purpose:
-- Accepts document text and optional Q&A context.
-- Builds a prompt using `prepareText()` output.
-- Sends it to OpenRouter.
-- Returns validated issues/questions.
-
-Request payload:
-```json
-{
-  "title": "Document Title",
-  "content": "raw document text",
-  "qaContext": [
-    { "id": "Q-001", "question": "?", "answer": "..." }
-  ]
-}
-```
-
-Response payload:
-```json
-{
-  "issues": [...],
-  "questions": [...]
-}
-```
-
-Behavior:
-- Always returns HTTP 200 with `issues/questions`, even on errors.
-- Error details are exposed via `x-lint-error` header.
-- Issues capped at 12, questions capped at 8.
-- OpenRouter API key is required (server-only).
-
-### POST /api/prepare-text
-
-Purpose:
-- Exposes the text preparation pipeline as a server API.
-- Accepts HTML or text and returns cleaned text, outline, stats, warnings.
-
-Request payload:
-```json
-{
-  "text": "raw input",
-  "options": {
-    "maxHeadingDepth": 4,
-    "tableMode": "keep",
-    "dedupeHeadings": true,
-    "dropArtifacts": true,
-    "dropNoiseLines": true,
-    "maxChars": 120000
-  }
-}
-```
-
-Response payload:
-```json
-{
-  "cleanedText": "string",
-  "outline": ["Heading 1", "Heading 2"],
-  "stats": { "chars": 0, "lines": 0, "approxTokens": 0 },
-  "warnings": ["Removed N SECTION markers", "..."]
-}
-```
 
 ## Text Preparation Pipeline
 
@@ -143,7 +78,7 @@ Stages:
 
 ## Prompt Construction
 
-Logic lives in `lib/lint-prompt.ts`:
+Logic lives in `shared/lib/document/prompt.ts`:
 
 - `prepareText()` is the single canonical cleaning pipeline.
 - `docTitle` is resolved from:
@@ -159,7 +94,7 @@ Logic lives in `lib/lint-prompt.ts`:
 
 ## Storage Model
 
-Document data is stored in `localStorage` for the MVP via `lib/storage.ts`.
+Document data is stored in `localStorage` for the MVP via `shared/lib/document/storage.ts`.
 This keeps the UI fast and avoids requiring a DB during early iteration.
 
 ## Editor & UI
@@ -167,8 +102,8 @@ This keeps the UI fast and avoids requiring a DB during early iteration.
 Main UI pieces:
 
 - `platform/editor/tiptap/Editor.tsx`: Rich editor with highlights.
-- `features/review/FindingsList.tsx`: Shows findings/questions and severity.
-- `features/document/TopBar.tsx`: Controls for save/run check.
+- `platform/assistant-runtime/ui/ba-reviewer/FindingsList.tsx`: Shows findings/questions and severity.
+- `platform/assistant-runtime/ui/ba-reviewer/ReviewerTopBar.tsx`: Controls for save/run check.
 - `features/document/SanitizeDev.tsx`: Dev preview for prepareText output.
 
 ## Configuration & Environment

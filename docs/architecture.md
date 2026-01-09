@@ -93,19 +93,15 @@ prepare -> buildPrompt -> callLLM -> parseJSON -> validate(zod)
 
 ## API
 
-POST /api/assistant/run
+POST /api/ba-reviewer
 - body: { documentId, action, assistantProfileId?, inputs?, document }
 - resolves profile by (docType, action) if not provided
 - returns run + result + promptSnapshot
 
-POST /api/lint
-- backward compatible proxy
-- uses lint profile
-- response remains issues/questions for existing UI contracts
-
 ## UI composition
 
-DocumentEditorShell
+ReviewerEditor (BA-reviewer)
+- DocumentEditorLayout
 - Tiptap editor
 - RunAssistantPanel (profile-driven inputs)
 - RunHistoryPanel
@@ -134,5 +130,4 @@ Add new artifact types by:
 
 ## Backward compatibility
 
-- /api/lint remains as a proxy for lint runs.
 - Legacy lint output (issues/questions) is normalized into findings/artifacts.

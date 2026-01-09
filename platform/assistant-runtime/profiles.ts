@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { lintResponseSchema } from "@/shared/lib/schemas";
+import { lintResponseSchema } from "@/shared/lib/ba-reviewer/schema";
 import type { AssistantProfile } from "@/platform/assistant-runtime/types";
 import type { AssistantResult, Finding } from "@/platform/artifacts/types";
 
